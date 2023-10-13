@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="7.0.11" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.6" />
+      <PackageReference Include="SQLitePCLRaw.core" Version="2.1.6" />
+      <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\oblig1_Yevhen_Verkhalantsev.Database\oblig1_Yevhen_Verkhalantsev.Database.csproj" />
+    </ItemGroup>
+
+</Project>
