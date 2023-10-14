@@ -5,23 +5,18 @@
     
     <div class="col-md-4">
         <div class="bg-secondary rounded h-100 p-4">
-            <h6 class="mb-4">Producer Form</h6>
+            <h6 class="mb-4">Category Form</h6>
             
             <div class="mb-3">
                 <label class="form-label">Name</label>
-                <input type="text" class="form-control" id="producer-name">
+                <input type="text" class="form-control" id="category-name">
             </div>
             
             <div class="mb-3">
                 <label class="form-label">Description</label>
-                <input type="text" class="form-control" id="producer-description">
+                <input type="text" class="form-control" id="category-description">
             </div>
-        
-            <div class="mb-3">
-                <label class="form-label">Address</label>
-                <input type="text" class="form-control" id="producer-address">
-            </div>  
-            
+
             <button id="btnCreate" type="button" style="margin-bottom: 10px" class="btn btn-primary">Create</button>
             
             <div id="create-success-label" class="alert alert-success d-none">
@@ -40,9 +35,8 @@
     <script>
         $("#btnCreate").on('click', ()=>{
             let data = {
-                Name: $("#producer-name").val(),
-                Description: $("#producer-description").val(),
-                address: $("#producer-address").val()
+                Name: $("#category-name").val(),
+                Description: $("#category-description").val(),
             }
             
             let jsonData = JSON.stringify(data)
@@ -51,7 +45,7 @@
             $("#create-error-label").addClass("d-none")
             
             $.ajax({
-                url:'@Url.Action("Create", "Producer")', 
+                url:'@Url.Action("Create", "Category")', 
                 method: 'post',
                 data: jsonData,
                 dataType: 'json',

@@ -1,0 +1,22 @@
+@using oblig1_Yevhen_Verkhalantsev.Models.Category
+@using oblig1_Yevhen_Verkhalantsev.Database.Entities
+@model CategoriesListHttpGetViewModel
+
+<div class="container">
+    <table class="table table-dark table-hover">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        
+        @foreach (CategoryEntity category in Model.Categories)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                <td>@category.Description</td>
+            </tr>
+        }
+    </table>
+</div>

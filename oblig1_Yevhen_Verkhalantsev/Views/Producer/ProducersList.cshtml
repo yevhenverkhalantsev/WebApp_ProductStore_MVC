@@ -1,0 +1,24 @@
+@using oblig1_Yevhen_Verkhalantsev.Models.Producer
+@using oblig1_Yevhen_Verkhalantsev.Database.Entities
+@model ProducersListHttpGetViewModel
+
+<div class="container">
+    <table class="table table-dark table-hover">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Address</th>
+        </tr>
+        
+        @foreach (ProducerEntity producer in Model.Producers)
+        {
+            <tr>
+                <td>@producer.Id</td>
+                <td>@producer.Name</td>
+                <td>@producer.Description</td>
+                <td>@producer.Adress</td>
+            </tr>
+        }
+    </table>
+</div>
