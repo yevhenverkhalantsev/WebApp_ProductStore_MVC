@@ -9,12 +9,14 @@
             
             <div class="mb-3">
                 <label class="form-label">Name</label>
-                <input type="text" class="form-control" id="category-name">
+                <input type="text" class="form-control" id="category-name" style="margin-bottom: 10px">
+                <div class="alert alert-danger d-none" id="category-name-error-label"></div>
             </div>
             
             <div class="mb-3">
                 <label class="form-label">Description</label>
-                <input type="text" class="form-control" id="category-description">
+                <input type="text" class="form-control" id="category-description" style="margin-bottom: 10px">
+                <div class="alert alert-danger d-none" id="category-description-error-label"></div>
             </div>
 
             <button id="btnCreate" type="button" style="margin-bottom: 10px" class="btn btn-primary">Create</button>
@@ -43,6 +45,8 @@
             
             $("#create-success-label").addClass("d-none")
             $("#create-error-label").addClass("d-none")
+            $("#category-name-error-label").addClass("d-none")
+            $("#category-description-error-label").addClass("d-none")
             
             $.ajax({
                 url:'@Url.Action("Create", "Category")', 
@@ -57,7 +61,17 @@
                     }, 3000)
                 },
                 error:(response)=>{
-                    $("#create-error-label").removeClass("d-none")
+                    let jsonResponse = JSON.parse(response.responseText)
+                    
+                    if (jsonResponse.hasOwnProperty("Name")){
+                        $("#category-name-error-label").removeClass("d-none")
+                        document.getElementById("category-name-error-label").innerHTML = jsonResponse.Name    
+                    }
+                    
+                    if (jsonResponse.hasOwnProperty("Description")){
+                        $("#category-description-error-label").removeClass("d-none")
+                        document.getElementById("category-description-error-label").innerHTML = jsonResponse.Description
+                    }
                 }
             })
         })

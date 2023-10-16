@@ -1,7 +1,10 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using oblig1_Yevhen_Verkhalantsev.EntityFramework;
 using oblig1_Yevhen_Verkhalantsev.EntityFramework.Repository;
 using oblig1_Yevhen_Verkhalantsev.Services.CategoryServices;
+using oblig1_Yevhen_Verkhalantsev.Services.CategoryServices.Models;
 using oblig1_Yevhen_Verkhalantsev.Services.ProducerServices;
 using oblig1_Yevhen_Verkhalantsev.Services.ProductServices;
 
@@ -15,11 +18,12 @@ services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data S
 
 services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-services.AddTransient<IproductService, ProductService>();
-
+services.AddTransient<IProductService, ProductService>();
 services.AddTransient<IProducerService, ProducerService>();
-
 services.AddTransient<ICategoryService, CategoryService>();
+
+services.AddFluentValidationAutoValidation();
+services.AddScoped<IValidator<CreateCategoryHttpPostModel>, CreateCategoryHttpPostValidator>();
 
 var app = builder.Build();
 

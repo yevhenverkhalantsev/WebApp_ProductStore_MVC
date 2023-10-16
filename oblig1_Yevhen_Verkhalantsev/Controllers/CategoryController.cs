@@ -24,6 +24,11 @@ public class CategoryController: Controller
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCategoryHttpPostModel vm)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         ResponseService response = await _categoryService.Create(vm);
         if (response.IsError)
         {
