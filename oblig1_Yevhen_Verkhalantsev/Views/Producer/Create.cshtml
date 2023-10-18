@@ -61,6 +61,9 @@
                     setTimeout(()=>{
                       $("#create-success-label").addClass("d-none")  
                     }, 3000)
+                    $("#producer-name").val("")
+                    $("#producer-description").val("")
+                    $("#producer-address").val("")
                 },
                 error:(response)=>{
                     $("#create-error-label").removeClass("d-none")

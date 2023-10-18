@@ -7,6 +7,7 @@ using oblig1_Yevhen_Verkhalantsev.Services.CategoryServices;
 using oblig1_Yevhen_Verkhalantsev.Services.CategoryServices.Models;
 using oblig1_Yevhen_Verkhalantsev.Services.ProducerServices;
 using oblig1_Yevhen_Verkhalantsev.Services.ProductServices;
+using oblig1_Yevhen_Verkhalantsev.Services.ProductServices.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ services.AddTransient<ICategoryService, CategoryService>();
 
 services.AddFluentValidationAutoValidation();
 services.AddScoped<IValidator<CreateCategoryHttpPostModel>, CreateCategoryHttpPostValidator>();
+services.AddScoped<IValidator<CreateProductHttpPostModel>, CreateProductHttpPostValidator>();
 
 var app = builder.Build();
 
@@ -45,6 +47,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Product}/{action=Create}/{id?}");
 
 app.Run();

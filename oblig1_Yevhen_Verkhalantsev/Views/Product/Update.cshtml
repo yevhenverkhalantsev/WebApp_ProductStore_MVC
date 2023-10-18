@@ -1,0 +1,144 @@
+@using oblig1_Yevhen_Verkhalantsev.Models.Product
+@using oblig1_Yevhen_Verkhalantsev.Database.Entities
+@model UpdateProductHttpGetViewModel
+
+<div class="row">
+    <div class="col-md-4">
+        
+    </div>
+    
+    <div class="col-md-4">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Update Product Form</h6>
+            
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" id="product-name" style="margin-bottom: 10px" value="@Model.Product.Name">
+                <div class="alert alert-danger d-none" id="product-name-error-label"></div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <input type="text" class="form-control" id="product-description" style="margin-bottom: 10px" value="@Model.Product.Description">
+                <div class="alert alert-danger d-none" id="product-description-error-label"></div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Price</label>
+                <input type="text" class="form-control" id="product-price" style="margin-bottom: 10px" value="@Model.Product.Price">
+                <div class="alert alert-danger d-none" id="product-price-error-label"></div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select class="form-control" id="category-name">
+                    @foreach(CategoryEntity categoryEntity in Model.Categories)
+                    {
+                        if (categoryEntity.Id == Model.Product.CategoryFK)
+                        {
+                            <option value="@categoryEntity.Id" selected="selected">
+                                @categoryEntity.Name
+                            </option> 
+                        }
+                        else
+                        {
+                            <option value="@categoryEntity.Id">
+                                @categoryEntity.Name
+                            </option> 
+                        }
+                    }
+                </select>
+                <div class="alert alert-danger d-none" id="category-name-error-label"></div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Producer</label>
+                <select class="form-control" id="producer-name">
+                    @foreach(ProducerEntity producerEntity in Model.Producers)
+                    {
+                        if (producerEntity.Id == Model.Product.ProducerFK)
+                        {
+                            <option value="@producerEntity.Id" selected="selected">
+                                @producerEntity.Name
+                            </option> 
+                        }
+                        else
+                        {
+                            <option value="@producerEntity.Id">
+                                @producerEntity.Name
+                            </option> 
+                        }
+                    }
+                </select>
+                <div class="alert alert-danger d-none" id="producer-name-error-label"></div>
+            </div>
+            
+            <button id="btnUpdate" type="button" style="margin-bottom: 10px" class="btn btn-primary">Update</button>
+            <button id="btnDelete" type="button" style="margin-bottom: 10px" class="btn btn-primary float-right">Delete</button>
+            
+            <div id="create-success-label" class="alert alert-success d-none">
+                Updated successfully!
+            </div>
+            <div id="create-error-label" class="alert alert-danger d-none">
+                Error on updated!
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+    $("#btnUpdate").on("click", ()=>{
+        let data = {
+            Id: Number(@Model.Product.Id),
+            Name: $("#product-name").val(),
+            Description: $("#product-description").val(),
+            Price: Number($("#product-price").val()),
+            ProducerId: Number($("#producer-name").val()),
+            CategoryId: Number($("#category-name").val())
+        }
+        let jsonData = JSON.stringify(data)
+        
+        $.ajax({
+            url:'@Url.Action("Update", "Product")', 
+            method: 'post',
+            data: jsonData,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: (response)=>{
+                
+            },
+            error:(response)=>{
+                
+            }
+        })
+    })
+    
+    $("#btnDelete").on("click", ()=>{
+        let data = {
+            Id: Number(@Model.Product.Id)
+        }
+        let jsonData = JSON.stringify(data)
+        
+       $.ajax({
+            url:'@Url.Action("Delete", "Product")', 
+            method: 'post',
+            data: jsonData,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: (response)=>{
+                alert("Deleted successfully!");
+                setTimeout(()=>{
+                    location.href = "@Url.Action("ProductsList", "Product")"
+                }, 3000)
+            },
+            error: (response)=>{
+                
+            }
+       })
+    })
+    
+    </script>
+}

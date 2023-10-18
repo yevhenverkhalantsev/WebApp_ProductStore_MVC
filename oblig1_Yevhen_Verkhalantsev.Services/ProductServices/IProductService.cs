@@ -7,5 +7,11 @@ namespace oblig1_Yevhen_Verkhalantsev.Services.ProductServices;
 public interface IProductService
 {
     Task<ResponseService> Create(CreateProductHttpPostModel vm);
-    Task<ICollection<ProductEntity>> GetAll();
+    ICollection<ProductEntity> GetAll();
+
+    Task<ResponseService<ProductEntity>> GetById(long id);
+    
+    Task<ResponseService> Update(UpdateProductHttpPostModel vm);
+
+    Task<ResponseService> Delete(DeleteProductHttpPostModel vm);
 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using oblig1_Yevhen_Verkhalantsev.Models.Product;
 using oblig1_Yevhen_Verkhalantsev.Services.CategoryServices;
 using oblig1_Yevhen_Verkhalantsev.Services.CategoryServices.Models;
@@ -29,8 +30,8 @@ public class ProductController: Controller
     {
         CreateProductHttpGetViewModel vm = new CreateProductHttpGetViewModel()
         {
-            Categories = await _categoryService.GetAll(),
-            Producers = await _producerService.GetAll()
+            Categories = _categoryService.GetAll(),
+            Producers = _producerService.GetAll()
         };
         
         return View(vm);
@@ -39,6 +40,10 @@ public class ProductController: Controller
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateProductHttpPostModel vm)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         var response = await _productService.Create(vm);
         if (response.IsError)
         {
@@ -60,9 +65,70 @@ public class ProductController: Controller
     {
         ProductListHttpGetViewModel vm = new ProductListHttpGetViewModel()
         {
-            Products = await _productService.GetAll()
+            Products = _productService.GetAll()
         };
         return View(vm);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Update(long id)
+    {
+        var response = await _productService.GetById(id);
+        if(response.IsError)
+        {
+            return View(new UpdateProductHttpGetViewModel()
+            {
+                Categories = _categoryService.GetAll(),
+                Producers = _producerService.GetAll(),
+                ErrorMessage = response.ErrorMessage,
+                IsError = true
+            });
+        }
+
+        return View(new UpdateProductHttpGetViewModel()
+        {
+            Categories = _categoryService.GetAll(),
+            Producers = _producerService.GetAll(),
+            IsError = false,
+            Product = response.Value
+        });
+
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Update([FromBody] UpdateProductHttpPostModel vm)
+    {
+        var response = await _productService.Update(vm);
+        if (response.IsError)
+        {
+            return BadRequest(new
+            {
+                responseMessage = response.ErrorMessage
+            });
+        }
+
+        return Ok(new
+        {
+            success = true
+        });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete([FromBody] DeleteProductHttpPostModel vm)
+    {
+        var response = await _productService.Delete(vm);
+        if (response.IsError)
+        {
+            return BadRequest(new
+            {
+                responseMessage = response.ErrorMessage
+            });
+        }
+
+        return Ok(new
+        {
+            success = true
+        });
     }
 }
 

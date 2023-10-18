@@ -71,7 +71,27 @@
 @section Scripts{
     <script>
     $("#btnCreate").on("click", ()=>{
+        let name = $("#product-name").val()
+        if (name == ""){
+            $("#product-name-error-label").removeClass("d-none")
+            document.getElementById("product-name-error-label").innerHTML = "Name is empty!"
+            return
+        }
+        
+        let description = $("#product-description").val()
+        if (description == ""){
+            $("#product-description-error-label").removeClass("d-none")
+            document.getElementById("product-description-error-label").innerHTML = "Description is empty!"
+            return
+        }
+        
         let price = $("#product-price").val()
+        if (price == ""){
+            $("#product-price-error-label").removeClass("d-none")
+            document.getElementById("product-price-error-label").innerHTML = "Price is empty!"
+            return
+        }
+        
         if (price != Number(price)){
             $("#product-price-error-label").removeClass("d-none")
             document.getElementById("product-price-error-label").innerHTML = "Not a number!"
@@ -82,22 +102,50 @@
             Name: $("#product-name").val(),
             Description: $("#product-description").val(),
             Price: price,
-            ProducerId: $("#producer-name").val(),
-            CategoryId: $("#category-name").val()
+            ProducerId: Number($("#producer-name").val()),
+            CategoryId: Number($("#category-name").val())
         }
-        
+        console.log(requestData)
         let jsonData = JSON.stringify(requestData)
+        
+        $("#create-success-label").addClass("d-none")
+        $("#create-error-label").addClass("d-none")
+        $("#product-name-error-label").addClass("d-none")
+        $("#product-description-error-label").addClass("d-none")
+        $("#product-price-error-label").addClass("d-none")
         
         $.ajax({
             url:'@Url.Action("Create", "Product")', 
-            method: 'post',
-            data: jsonData,
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
+                            method: 'post',
+                            data: jsonData,
+                            dataType: 'json',
+                            contentType: 'application/json; charset=utf-8',
             success: (response) => {
-                
+                $("#create-success-label").removeClass("d-none")
+                setTimeout(()=>{
+                  $("#create-success-label").addClass("d-none")  
+                }, 3000)
+                $("#product-name").val("")
+                $("#product-description").val("")
+                $("#product-price").val("")
             },
             error: (response) => {
+                let jsonResponse = JSON.parse(response.responseText)
+                
+                if (jsonResponse.hasOwnProperty("Name")){
+                    $("#product-name-error-label").removeClass("d-none")
+                    document.getElementById("product-name-error-label").innerHTML = jsonResponse.Name    
+                }
+                
+                if (jsonResponse.hasOwnProperty("Description")){
+                    $("#product-description-error-label").removeClass("d-none")
+                    document.getElementById("product-description-error-label").innerHTML = jsonResponse.Description
+                }
+                
+                if (jsonResponse.hasOwnProperty("Price")){
+                    $("#product-price-error-label").removeClass("d-none")
+                    document.getElementById("product-price-error-label").innerHTML = jsonResponse.Price
+                }
                 
             }
         })

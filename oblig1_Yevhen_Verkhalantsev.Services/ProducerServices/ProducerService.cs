@@ -37,8 +37,43 @@ public class ProducerService : IProducerService
         return ResponseService.Ok();
     }
 
-    public async Task<ICollection<ProducerEntity>> GetAll()
+    public ICollection<ProducerEntity> GetAll()
     {
-        return await _producerRepository.GetAll().ToListAsync();
+        return _producerRepository.GetAll().ToList();
+    }
+
+    public async Task<ResponseService<ProducerEntity>> GetById(long id)
+    {
+        ProducerEntity producer = await _producerRepository.GetById(id);
+        if (producer == null)
+        {
+            return ResponseService<ProducerEntity>.Error("Don't exist with current id");
+        }
+
+        return ResponseService<ProducerEntity>.Ok(producer);
+    }
+
+    public async Task<ResponseService> Update(UpdateProducerHttpPostModel vm)
+    {
+        ProducerEntity producerEntity = await _producerRepository.GetById(vm.Id);
+        if (producerEntity == null)
+        {
+            return ResponseService.Error("Bad producers id");
+        }
+
+        producerEntity.Name = vm.Name;
+        producerEntity.Description = vm.Description;
+        producerEntity.Adress = vm.Address;
+
+        try
+        {
+            await _producerRepository.Update(producerEntity);
+        }
+        catch (Exception e)
+        {
+            return ResponseService.Error(e.Message);
+        }
+
+        return ResponseService.Ok();
     }
 }

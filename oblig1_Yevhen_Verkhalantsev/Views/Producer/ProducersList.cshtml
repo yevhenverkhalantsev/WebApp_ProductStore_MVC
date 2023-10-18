@@ -13,7 +13,7 @@
         
         @foreach (ProducerEntity producer in Model.Producers)
         {
-            <tr>
+            <tr id="producer-@producer.Id" style="cursor: pointer">
                 <td>@producer.Id</td>
                 <td>@producer.Name</td>
                 <td>@producer.Description</td>
@@ -22,3 +22,17 @@
         }
     </table>
 </div>
+
+@section Scripts
+{
+    <script>
+        let producers = document.querySelectorAll("[id^='producer-']")
+        producers.forEach(producer=>{
+            producer.addEventListener("click", ()=>{
+                let idParts = producer.id.split("-")
+                let producerId = idParts[idParts.length - 1]
+                location.href = "@Url.Action("Update","Producer")?id=" + producerId
+            })
+        })
+    </script>
+}

@@ -36,8 +36,8 @@ public class CategoryService: ICategoryService
         return ResponseService.Ok();
     }
 
-    public async Task<ICollection<CategoryEntity>> GetAll()
+    public ICollection<CategoryEntity> GetAll()
     {
-        return await _categoryRepository.GetAll().ToListAsync();
+        return _categoryRepository.GetAll().ToList();
     }
 }

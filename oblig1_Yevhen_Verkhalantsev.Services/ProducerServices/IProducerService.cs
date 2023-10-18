@@ -8,6 +8,10 @@ public interface IProducerService
 {
     Task<ResponseService> Create(CreateProducerHttpPostModel createProducerHttpPostModel);
 
-    Task<ICollection<ProducerEntity>> GetAll();
+    ICollection<ProducerEntity> GetAll();
+
+    Task<ResponseService<ProducerEntity>> GetById(long id);
+
+    Task<ResponseService> Update(UpdateProducerHttpPostModel vm);
 
 }

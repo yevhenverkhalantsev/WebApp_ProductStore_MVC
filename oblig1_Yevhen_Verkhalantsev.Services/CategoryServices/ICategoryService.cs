@@ -8,6 +8,6 @@ public interface ICategoryService
 {
     Task<ResponseService> Create(CreateCategoryHttpPostModel createProducerHttpPostModel);
 
-    Task<ICollection<CategoryEntity>> GetAll();
+    ICollection<CategoryEntity> GetAll();
 
 }

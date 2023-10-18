@@ -1,0 +1,72 @@
+@using oblig1_Yevhen_Verkhalantsev.Models.Producer
+@model UpdateProducerHttpGetViewModel
+
+<div class="row">
+    <div class="col-md-4">
+        
+    </div>
+    
+    <div class="col-md-4">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Update Producer Form</h6>
+            
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" id="producer-name" value="@Model.Producer.Name">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <input type="text" class="form-control" id="producer-description" value="@Model.Producer.Description">
+            </div>
+        
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <input type="text" class="form-control" id="producer-address" value="@Model.Producer.Adress">
+            </div>  
+            
+            <button id="btnUpdate" type="button" style="margin-bottom: 10px" class="btn btn-primary">Save</button>
+            
+            <div id="update-success-label" class="alert alert-success d-none">
+                Updated successfully!
+            </div>
+            <div id="update-error-label" class="alert alert-danger d-none">
+                Error on updated!
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+    $("#btnUpdate").on("click", ()=>{
+        let data = {
+            Id: Number(@Model.Producer.Id),
+            Name: $("#producer-name").val(),
+            Description: $("#producer-description").val(),
+            Address: $("#producer-address").val()
+           
+        }
+        let jsonData = JSON.stringify(data)
+        
+        $.ajax({
+            url:'@Url.Action("Update", "Producer")', 
+            method: 'post',
+            data: jsonData,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: (response)=>{
+                $("#update-success-label").removeClass("d-none")
+                setTimeout(()=>{
+                  $("#update-success-label").addClass("d-none")  
+                }, 3000)
+            },
+            error: (response)=>{
+               $("#update-error-label").removeClass("d-none")
+            }
+        })
+    })
+    </script>
+}

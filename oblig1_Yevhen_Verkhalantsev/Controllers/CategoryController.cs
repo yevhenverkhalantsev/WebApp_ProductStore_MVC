@@ -42,7 +42,7 @@ public class CategoryController: Controller
     {
         CategoriesListHttpGetViewModel vm = new CategoriesListHttpGetViewModel()
         {
-            Categories = await _categoryService.GetAll()
+            Categories = _categoryService.GetAll()
         };
         return View(vm);
     }

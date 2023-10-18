@@ -37,9 +37,47 @@ public class ProducerController: Controller
     {
         ProducersListHttpGetViewModel vm = new ProducersListHttpGetViewModel()
         {
-            Producers = await _producerService.GetAll()
+            Producers = _producerService.GetAll()
         };
         return View(vm);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Update(long id)
+    {
+        var response = await _producerService.GetById(id);
+        if (response.IsError)
+        {
+            return View(new UpdateProducerHttpGetViewModel()
+            {
+                ErrorMessage = response.ErrorMessage,
+                IsError = true
+            });
+        }
+        return View(new UpdateProducerHttpGetViewModel()
+        {
+            IsError = false,
+            Producer = response.Value
+        });
+        
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Update([FromBody] UpdateProducerHttpPostModel vm)
+    {
+        var response = await _producerService.Update(vm);
+        if (response.IsError)
+        {
+            return BadRequest(new
+            {
+                responseMessage = response.ErrorMessage
+            });
+        }
+
+        return Ok(new
+        {
+            success = true
+        });
     }
     
 }
